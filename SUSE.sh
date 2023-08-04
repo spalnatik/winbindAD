@@ -29,11 +29,11 @@ krb_content="includedir  /etc/krb5.conf.d
     .intl.contoso.com = INTL.CONTOSO.COM
     intl.contoso.com = INTL.CONTOSO.COM"
 
-echo "$krb_content" > /etc/krb5.conf
+sudo echo "$krb_content" > /etc/krb5.conf
 
-zypper in samba-client samba-libs samba-winbind
+sudo zypper  -n install samba-client samba-libs samba-winbind
 
-cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
 
 # samba configuration 
 new_content="[global]
