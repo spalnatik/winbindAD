@@ -2,8 +2,8 @@
 
 
 #domain_name=$1
-domain_admin_username=$2
-domain_admin_password=$3
+domain_admin_username=$1
+domain_admin_password=$2
 
 #krb5 configuration
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
@@ -94,13 +94,21 @@ echo "$new_content" >  /etc/samba/smb.conf
 sed -i 's/^group:[[:space:]]*compat[[:space:]]*$/group:          compat winbind/' /etc/nsswitch.conf
 sed -i 's/^passwd:[[:space:]]*compat[[:space:]]*$/passwd:         compat winbind/' /etc/nsswitch.conf
 
-echo "$domain_admin_password" | kinit $domain_admin_username
+
 
 hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
 echo "10.0.0.5        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+
+echo "$domain_admin_password" | kinit $domain_admin_username
+
+net ads join -k
+
+systemctl enable winbind
+
+systemctl start winbind
 
 new_lines="[global]
 krb5_auth = yes
