@@ -14,9 +14,6 @@ sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 sudo echo "$2" |realm join --membership-software=samba --client-software=winbind intl.contoso.com -U $1
 
 
-
-#!/bin/bash
-
 # Define the lines to be added to the krb5.conf file
 lines_to_add="[plugins]
     localauth = {
@@ -34,5 +31,11 @@ systemctl enable --now smb
 yum install krb5-workstation -y 
 
 sudo echo "$2" | kinit $1
+
+hostname=`hostname`
+
+hostnamectl set-hostname $hostname.intl.contoso.com
+
+echo "10.0.0.9        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
 net ads join -k
