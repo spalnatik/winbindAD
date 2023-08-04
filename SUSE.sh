@@ -2,8 +2,8 @@
 
 
 #domain_name=$1
-domain_admin_username=$1
-domain_admin_password=$2
+#domain_admin_username=$1
+#domain_admin_password=$2
 
 #krb5 configuration
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
@@ -102,7 +102,8 @@ hostnamectl set-hostname $hostname.intl.contoso.com
 
 echo "10.0.0.5        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
-echo "$domain_admin_password" | kinit $domain_admin_username
+#echo "$domain_admin_password" | kinit $domain_admin_username
+echo "$2" | kinit $1
 
 net ads join -k
 
