@@ -9,6 +9,30 @@ sudo yum install realmd oddjob-mkhomedir oddjob samba-winbind-clients samba-winb
 
 sudo  yum install samba -y
 
-mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
-realm join --membership-software=samba --client-software=winbind intl.contoso.com -U tempadmin
+sudo echo "$2" |realm join --membership-software=samba --client-software=winbind intl.contoso.com -U $1
+
+
+
+#!/bin/bash
+
+# Define the lines to be added to the krb5.conf file
+lines_to_add="[plugins]
+    localauth = {
+        module = winbind:/usr/lib64/samba/krb5/winbind_krb5_localauth.so
+        enable_only = winbind
+    }"
+
+# File path to the krb5.conf file
+krb5_conf="/etc/krb5.conf"
+
+echo "$lines_to_add" | sudo tee -a "$krb5_conf"
+
+systemctl enable --now smb
+
+yum install krb5-workstation -y 
+
+sudo echo "$2" | kinit $1
+
+net ads join -k
