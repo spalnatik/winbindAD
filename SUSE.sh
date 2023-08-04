@@ -100,7 +100,7 @@ hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
-echo "10.0.0.8        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+echo "10.0.0.5        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
 new_lines="[global]
 krb5_auth = yes
