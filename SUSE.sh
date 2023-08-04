@@ -111,4 +111,4 @@ sudo sed -i '/^\[global\]/a\'$'\n''krb5_auth = yes\'$'\n''krb5_ccache_type = FIL
 pam-config -a --winbind
 pam-config -a --mkhomedir
 
-reboot
+
