@@ -64,9 +64,9 @@ new_content="[global]
 
 echo "$new_content" >  /etc/samba/smb.conf
 
-sed -i 's/^group:[[:space:]]*compat[[:space:]]*$/group:          compat winbind/' /etc/nsswitch.conf
-sed -i 's/^passwd:[[:space:]]*compat[[:space:]]*$/passwd:         compat winbind/' /etc/nsswitch.conf
-
+sudo sed -i 's/^passwd:.*$/passwd:    compat systemd winbind/' /etc/nsswitch.conf
+sudo sed -i 's/^group:.*$/group:     compat systemd winbind/' /etc/nsswitch.conf
+sudo sed -i 's/^shadow:.*$/shadow:     compat/' /etc/nsswitch.conf
 
 
 hostname=`hostname`
@@ -78,7 +78,7 @@ echo "10.0.0.8        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 #echo "$domain_admin_password" | kinit $domain_admin_username
 echo "$2" | kinit $1
 
-net ads join -k
+echo "$2" | net ads join -U $1
 
 systemctl enable smbd nmbd winbind
 systemctl restart smbd nmbd winbind
