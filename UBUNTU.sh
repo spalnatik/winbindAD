@@ -39,7 +39,7 @@ krb_content="includedir  /etc/krb5.conf.d
 
 [domain_realm]
     .intl.contoso.com = INTL.CONTOSO.COM
-    intl.contoso.com = INTL.CONTOSO.COM
+    intl.contoso.com = INTL.CONTOSO.COM"
 
 sudo echo "$krb_content" > /etc/krb5.conf
 
@@ -49,11 +49,7 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
 new_content="[global]
         security = ads
         realm = INTL.CONTOSO.COM
-# If the system doesn't find the domain controller automatically, you may need the following line
-#        password server = 10.0.0.1
-# note that workgroup is the 'short' domain name
         workgroup = CONTOSO
-#       winbind separator = +
         idmap uid = 10000-20000
         idmap gid = 10000-20000
         winbind enum users = yes
