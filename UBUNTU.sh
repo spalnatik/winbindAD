@@ -14,8 +14,6 @@ systemd-resolve --status
 
 apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winbind
 
-hostnamectl set-hostname ubuntuAD.intl.contoso.com
-
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
 
 krb_content="includedir  /etc/krb5.conf.d
@@ -45,3 +43,48 @@ krb_content="includedir  /etc/krb5.conf.d
 
 sudo echo "$krb_content" > /etc/krb5.conf
 
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
+
+# samba configuration 
+new_content="[global]
+        security = ads
+        realm = INTL.CONTOSO.COM
+# If the system doesn't find the domain controller automatically, you may need the following line
+#        password server = 10.0.0.1
+# note that workgroup is the 'short' domain name
+        workgroup = CONTOSO
+#       winbind separator = +
+        idmap uid = 10000-20000
+        idmap gid = 10000-20000
+        winbind enum users = yes
+        winbind enum groups = yes
+        template homedir = /home/%D/%U
+        template shell = /bin/bash
+        client use spnego = yes
+        client ntlmv2 auth = yes
+        encrypt passwords = yes
+        winbind use default domain = yes
+        restrict anonymous = 2"
+
+echo "$new_content" >  /etc/samba/smb.conf
+
+sed -i 's/^group:[[:space:]]*compat[[:space:]]*$/group:          compat winbind/' /etc/nsswitch.conf
+sed -i 's/^passwd:[[:space:]]*compat[[:space:]]*$/passwd:         compat winbind/' /etc/nsswitch.conf
+
+
+
+hostname=`hostname`
+
+hostnamectl set-hostname $hostname.intl.contoso.com
+
+echo "10.0.0.8        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+
+#echo "$domain_admin_password" | kinit $domain_admin_username
+echo "$2" | kinit $1
+
+net ads join -k
+
+systemctl enable smbd nmbd winbind
+systemctl restart smbd nmbd winbind
+
+pam-auth-update
