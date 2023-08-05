@@ -12,6 +12,8 @@ EOF
 netplan apply
 systemd-resolve --status
 
+echo "krb5-config krb5-config/default_realm string intl.contoso.com" > krb5-config.seed
+sudo debconf-set-selections < krb5-config.seed
 apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winbind
 
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
