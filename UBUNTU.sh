@@ -7,7 +7,7 @@ network:
   ethernets:
     eth0:
       nameservers:
-        search: [ contoso.com ]
+        search: [ intl.contoso.com ]
 EOF
 netplan apply
 systemd-resolve --status
