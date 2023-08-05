@@ -18,9 +18,7 @@ apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winb
 
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
 
-krb_content="includedir  /etc/krb5.conf.d
-
-[libdefaults]
+krb_content="[libdefaults]
       dns_lookup_realm = false
       ticket_lifetime = 24h
       renew_lifetime = 7d
