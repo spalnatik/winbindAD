@@ -1,3 +1,5 @@
+
+
 #!/bin/bash
 
 
@@ -129,4 +131,6 @@ krb5_auth = yes
 krb5_ccache_type = FILE"
 sudo sed -i '/^\[global\]/a\'$'\n''krb5_auth = yes\'$'\n''krb5_ccache_type = FILE' "/etc/security/pam_winbind.conf"
 
+realm leave
+realm join --membership-software=samba --client-software=winbind intl.contoso.com -U tempadmin
 
