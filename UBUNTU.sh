@@ -73,7 +73,7 @@ hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
-echo "10.0.0.8        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+echo "10.0.0.6        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
 #echo "$domain_admin_password" | kinit $domain_admin_username
 echo "$2" | kinit $1
