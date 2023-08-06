@@ -83,4 +83,5 @@ echo "$2" | net ads join -U $1
 systemctl enable smbd nmbd winbind
 systemctl restart smbd nmbd winbind
 
-#pam-auth-update
+sudo pam-auth-update --enable mkhomedir
+
