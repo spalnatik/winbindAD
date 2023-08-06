@@ -36,6 +36,6 @@ hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
-echo "10.0.0.9        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+echo "10.0.0.6        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
 net ads join -k
