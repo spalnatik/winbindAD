@@ -40,6 +40,9 @@ hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
-echo "10.0.0.6        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+ip=`hostname -I | awk '{print $1}'`
+
+echo "$ip        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+
 
 net ads join -k
