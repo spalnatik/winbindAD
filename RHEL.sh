@@ -112,7 +112,7 @@ hostname=`hostname`
 
 hostnamectl set-hostname $hostname.intl.contoso.com
 
-ip=$(hostname -I | awk '{print $1}')
+ip=`hostname -I | awk '{print $1}'`
 
 echo "$ip        $hostname.intl.contoso.com $hostname" >> /etc/hosts
 
