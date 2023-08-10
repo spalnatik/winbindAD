@@ -1,8 +1,12 @@
 #!/bin/bash
 
-sudo echo 'append domain-search "intl.contoso.com"' >> /etc/dhcp/dhclient.conf
+domain_name=$1
+domain_admin_username=$2
+domain_admin_password=$3
+
+sudo echo 'append domain-search "lab.local"' >> /etc/dhcp/dhclient.conf
 sudo sed -i '/^\[main\]/a dhcp = dhclient' /etc/NetworkManager/NetworkManager.conf
-#echo "nameserver 10.0.0.15" >> /etc/resolv.conf
+
 sudo systemctl restart NetworkManager
 
 sudo update-crypto-policies --set DEFAULT:AD-SUPPORT
@@ -15,7 +19,7 @@ sudo  yum install samba -y
 
 sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
-sudo echo "$2" |realm join --membership-software=samba --client-software=winbind intl.contoso.com -U "$1"
+sudo echo "$domain_admin_password" |realm join --membership-software=samba --client-software=winbind lab.local -U "$domain_admin_username"
 
 
 # Define the lines to be added to the krb5.conf file
@@ -34,15 +38,15 @@ systemctl enable --now smb
 
 yum install krb5-workstation -y 
 
-sudo echo "$2" | kinit $1
+sudo echo "$domain_admin_password" | kinit $domain_admin_username
 
 hostname=`hostname`
 
-hostnamectl set-hostname $hostname.intl.contoso.com
+hostnamectl set-hostname $hostname.lab.local
 
 ip=`hostname -I | awk '{print $1}'`
 
-echo "$ip        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+echo "$ip        $hostname.lab.local $hostname" >> /etc/hosts
 
 
 net ads join -k
