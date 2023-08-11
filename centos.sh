@@ -9,7 +9,7 @@ sudo sed -i '/^\[main\]/a dhcp = dhclient' /etc/NetworkManager/NetworkManager.co
 
 sudo systemctl restart NetworkManager
 
-sudo update-crypto-policies --set DEFAULT:AD-SUPPORT
+#sudo update-crypto-policies --set DEFAULT:AD-SUPPORT
 
 #sudo yum install --disablerepo='*' --enablerepo='*microsoft*' 'rhui-azure-*' -y 
 
