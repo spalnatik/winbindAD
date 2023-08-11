@@ -3,6 +3,7 @@
 domain_name=$1
 domain_admin_username=$2
 domain_admin_password=$3
+no_caps_domain_name=${domain_name,,}
 
 sudo echo 'append domain-search "lab.local"' >> /etc/dhcp/dhclient.conf
 sudo sed -i '/^\[main\]/a dhcp = dhclient' /etc/NetworkManager/NetworkManager.conf
@@ -48,5 +49,6 @@ ip=`hostname -I | awk '{print $1}'`
 
 echo "$ip        $hostname.lab.local $hostname" >> /etc/hosts
 
+echo "%$no_caps_domain_name\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL
 
 net ads join -k
