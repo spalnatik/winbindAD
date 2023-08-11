@@ -49,6 +49,6 @@ ip=`hostname -I | awk '{print $1}'`
 
 echo "$ip        $hostname.lab.local $hostname" >> /etc/hosts
 
-echo "%$no_caps_domain_name\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL"
+echo "%lab.local\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL"
 
 net ads join -k
