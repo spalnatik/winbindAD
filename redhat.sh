@@ -11,7 +11,7 @@ sudo systemctl restart NetworkManager
 
 sudo update-crypto-policies --set DEFAULT:AD-SUPPORT
 
-#sudo yum install --disablerepo='*' --enablerepo='*microsoft*' 'rhui-azure-* -y 
+sudo yum install --disablerepo='*' --enablerepo='*microsoft*' 'rhui-azure-*' -y 
 
 sudo yum install realmd oddjob-mkhomedir oddjob samba-winbind-clients samba-winbind samba-common-tools samba-winbind-krb5-locator -y
 
