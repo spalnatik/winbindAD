@@ -47,6 +47,6 @@ hostnamectl set-hostname $hostname.lab.local
 ip=`hostname -I | awk '{print $1}'`
 
 echo "$ip        $hostname.lab.local $hostname" >> /etc/hosts
-
+echo "%lab.local\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL"
 
 net ads join -k
