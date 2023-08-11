@@ -8,8 +8,6 @@ domain_admin_password=$3
 #krb5 configuration
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
 
-krb_content="includedir  /etc/krb5.conf.d
-
 [libdefaults]
     default_realm = LAB.LOCAL
     #dns_lookup_kdc = true
