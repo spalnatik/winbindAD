@@ -41,7 +41,7 @@ then
             echo "executing the script .." >> $logfile
             ./centos.sh $domain_name $domain_admin_username $domain_admin_password
             ;;
-        'Red Hat Enterprise Linux Server')
+        'Red Hat Enterprise Linux')
             echo "This is a Redhat  machine " >> $logfile
             echo "Downloading the script for Redhat  from github and execute it " >> $logfile
             wget -O redhat.sh https://raw.githubusercontent.com/spalnatik/winbindAD/main/redhat.sh
