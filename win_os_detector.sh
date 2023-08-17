@@ -52,10 +52,10 @@ then
         'Oracle Linux Server')
             echo "This is an Oracle  machine " >> $logfile
             echo "Downloading the script for Oracle  from github and execute it " >> $logfile
-            wget -O oracle-domain-join.sh https://raw.githubusercontent.com/imabedalghafer/domain-repro/master/oracle-domain-join.sh
-            chmod +x oracle-domain-join.sh
+            wget -O oracle.sh https://raw.githubusercontent.com/spalnatik/winbindAD/main/oracle.sh
+            chmod +x oracle.sh
             echo "executing the script .." >> $logfile
-            ./oracle-domain-join.sh $domain_name $domain_admin_username $domain_admin_password
+            ./oracle.sh $domain_name $domain_admin_username $domain_admin_password
             ;;
             *)
             echo "OS release file is there , but it does not match the endoresed distribtion, manual check is needed" >> $logfile
