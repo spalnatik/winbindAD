@@ -116,7 +116,7 @@ krb5_auth = yes
 krb5_ccache_type = FILE"
 
 sudo sed -i '/^\[global\]/a\'$'\n''krb5_auth = yes\'$'\n''krb5_ccache_type = FILE' "/etc/security/pam_winbind.conf"
-echo "%lab.local\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL"
+echo "%lab.local\\\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL" >> /etc/sudoers
 pam-config -a --winbind
 pam-config -a --mkhomedir
 
