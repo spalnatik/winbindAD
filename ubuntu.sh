@@ -54,7 +54,7 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
 new_content="[global]
         security = ads
         realm = LAB.LOCAL
-        workgroup = CONTOSO
+        workgroup = LAB
         idmap uid = 10000-20000
         idmap gid = 10000-20000
         winbind enum users = yes
