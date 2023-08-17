@@ -1,4 +1,9 @@
 #!/bin/bash
+
+domain_name=$1
+domain_admin_username=$2
+domain_admin_password=$3
+
 netplan apply
 
 # Create the file and write the content
@@ -7,12 +12,12 @@ network:
   ethernets:
     eth0:
       nameservers:
-        search: [ intl.contoso.com ]
+        search: [ lab.local ]
 EOF
 netplan apply
 systemd-resolve --status
 
-echo "krb5-config krb5-config/default_realm string intl.contoso.com" > krb5-config.seed
+echo "krb5-config krb5-config/default_realm string lab.local" > krb5-config.seed
 sudo debconf-set-selections < krb5-config.seed
 apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winbind
 
@@ -24,22 +29,22 @@ krb_content="[libdefaults]
       renew_lifetime = 7d
       forwardable = true
       rdns = false
-      default_realm = INTL.CONTOSO.COM
+      default_realm = LAB.LOCAL
       default_ccache_name = KEYRING:persistent:%{uid}
 
 [realms]
-      INTL.CONTOSO.COM = {
-            kdc = intl.contoso.com
-            admin_server = intl.contoso.com
-            default_domain = intl.contoso.com
+      LAB.LOCAL = {
+            kdc = lab.local
+            admin_server = lab.local
+            default_domain = lab.local
             pkinit_anchors = FILE:/etc/pki/nssdb/certificate.pem
             pkinit_cert_match = <KU>digitalSignature
-            pkinit_kdc_hostname = intl.contoso.com
+            pkinit_kdc_hostname = lab.local
       }
 
 [domain_realm]
-    .intl.contoso.com = INTL.CONTOSO.COM
-    intl.contoso.com = INTL.CONTOSO.COM"
+    .lab.local = LAB.LOCAL
+    lab.local = LAB.LOCAL"
 
 sudo echo "$krb_content" > /etc/krb5.conf
 
@@ -48,7 +53,7 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
 # samba configuration 
 new_content="[global]
         security = ads
-        realm = INTL.CONTOSO.COM
+        realm = LAB.LOCAL
         workgroup = CONTOSO
         idmap uid = 10000-20000
         idmap gid = 10000-20000
@@ -71,16 +76,16 @@ sudo sed -i 's/^shadow:.*$/shadow:     compat/' /etc/nsswitch.conf
 
 hostname=`hostname`
 
-hostnamectl set-hostname $hostname.intl.contoso.com
+hostnamectl set-hostname $hostname.lab.local
 
 ip=$(hostname -I | awk '{print $1}')
 
-echo "$ip        $hostname.intl.contoso.com $hostname" >> /etc/hosts
+echo "$ip        $hostname.lab.local $hostname" >> /etc/hosts
 
-#echo "$domain_admin_password" | kinit $domain_admin_username
-echo "$2" | kinit $1
+echo "$domain_admin_password" | kinit $domain_admin_username
+#echo "$2" | kinit $1
 
-echo "$2" | net ads join -U $1
+echo "$domain_admin_password" | net ads join -U  $domain_admin_username
 
 systemctl enable smbd nmbd winbind
 systemctl restart smbd nmbd winbind
