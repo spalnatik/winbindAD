@@ -19,7 +19,7 @@ systemd-resolve --status
 
 echo "krb5-config krb5-config/default_realm string lab.local" > krb5-config.seed
 sudo debconf-set-selections < krb5-config.seed
-apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winbind
+apt update && apt-get install -y samba krb5-config krb5-user winbind libpam-winbind libnss-winbind
 
 cp -p /etc/krb5.conf /etc/krb5.conf_bkp
 
@@ -52,20 +52,21 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_bkp
 
 # samba configuration 
 new_content="[global]
-        security = ads
-        realm = LAB.LOCAL
-        workgroup = LAB
-        idmap uid = 10000-20000
-        idmap gid = 10000-20000
-        winbind enum users = yes
-        winbind enum groups = yes
-        template homedir = /home/%D/%U
-        template shell = /bin/bash
-        client use spnego = yes
-        client ntlmv2 auth = yes
-        encrypt passwords = yes
-        winbind use default domain = yes
-        restrict anonymous = 2"
+  kerberos method = secrets and keytab
+  template homedir = /home/%U@%D
+  workgroup = LAB
+  template shell = /bin/bash
+  security = ads
+  realm = LAB.LOCAL
+  idmap config LAB : range = 2000000-2999999
+  idmap config LAB : backend = rid
+  idmap config * : range = 10000-999999
+  idmap config * : backend = tdb
+  winbind use default domain = no
+  winbind refresh tickets = yes
+  winbind offline logon = yes
+  winbind enum groups = no
+  winbind enum users = no"
 
 echo "$new_content" >  /etc/samba/smb.conf
 
