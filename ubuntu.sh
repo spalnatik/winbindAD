@@ -91,4 +91,5 @@ echo "$domain_admin_password" | net ads join -U  $domain_admin_username
 systemctl enable smbd nmbd winbind
 systemctl restart smbd nmbd winbind
 
+echo "%lab.local\\\\$domain_admin_username ALL=(ALL)    NOPASSWD:ALL" >> /etc/sudoers
 sudo pam-auth-update --enable mkhomedir
