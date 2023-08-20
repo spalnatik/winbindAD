@@ -36,7 +36,7 @@ then
         'CentOS Linux')
             echo "This is a Centos machine " >> $logfile
             echo "Downloading the script for Centos from github and execute it " >> $logfile
-            wget -O centos.sh https://github.com/spalnatik/winbindAD/blob/main/centos.sh
+            wget -O centos.sh https://raw.githubusercontent.com/spalnatik/winbindAD/main/centos.sh
             chmod +x centos.sh
             echo "executing the script .." >> $logfile
             ./centos.sh $domain_name $domain_admin_username $domain_admin_password
