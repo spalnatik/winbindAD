@@ -28,10 +28,10 @@ then
         'Ubuntu')
             echo "This is a Ubuntu machine " >> $logfile
             echo "Downloading the script for Ubuntu from github and execute it " >> $logfile
-            wget -O ubuntu-domain-join.sh https://raw.githubusercontent.com/imabedalghafer/domain-repro/master/ubuntu-domain-join.sh
-            chmod +x ubuntu-domain-join.sh
+            wget -O ubuntu.sh https://raw.githubusercontent.com/spalnatik/winbindAD/main/ubuntu.sh
+            chmod +x ubuntu.sh
             echo "executing the script .." >> $logfile
-            ./ubuntu-domain-join.sh $domain_name $domain_admin_username $domain_admin_password
+            ./ubuntu.sh $domain_name $domain_admin_username $domain_admin_password
             ;;
         'CentOS Linux')
             echo "This is a Centos machine " >> $logfile
